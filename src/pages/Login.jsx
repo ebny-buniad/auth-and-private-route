@@ -9,6 +9,8 @@ const Login = () => {
                     <h2 className='text-2xl'>Login</h2>
                     <div className="card-body">
                         <fieldset className="fieldset">
+                            <label className="label">Name</label>
+                            <input type="text" className="input" placeholder="Name" />
                             <label className="label">Email</label>
                             <input type="email" className="input" placeholder="Email" />
                             <label className="label">Password</label>
