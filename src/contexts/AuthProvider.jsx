@@ -6,15 +6,21 @@ import { auth } from "../firebase.init";
 const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true)
+
+
   const createUser = (email, password) => {
+    setLoading(true)
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  const loginUser = (email, password) =>{
+  const loginUser = (email, password) => {
+    setLoading(true)
     return signInWithEmailAndPassword(auth, email, password);
   }
 
-  const signOutUser = () =>{
+  const signOutUser = () => {
+    setLoading(true)
     return signOut(auth)
   }
 
@@ -27,18 +33,20 @@ const AuthProvider = ({ children }) => {
   //   }
   // })
 
-  useEffect(()=>{
-      const unSubscribe = onAuthStateChanged(auth, currentUser =>{
-        console.log('Current user inside useEffect on auth state chaange', currentUser)
-        setUser(currentUser)
-      })
-      return ()=>{
-        unSubscribe();
-      }
-  },[])
+  useEffect(() => {
+    const unSubscribe = onAuthStateChanged(auth, currentUser => {
+      console.log('Current user inside useEffect on auth state chaange', currentUser)
+      setUser(currentUser);
+      setLoading(false)
+    })
+    return () => {
+      unSubscribe();
+    }
+  }, [])
 
   const userInfo = {
     user,
+    loading,
     createUser,
     loginUser,
     signOutUser
@@ -46,7 +54,7 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext value={userInfo}>
-        {children}
+      {children}
     </AuthContext>
   )
 };
